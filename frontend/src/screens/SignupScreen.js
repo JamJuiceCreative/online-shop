@@ -4,7 +4,7 @@ import Container from 'react-bootstrap/Container';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import { Helmet } from 'react-helmet-async';
-import { useState, useContext, useEffect } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { Store } from '../Store';
 import { toast } from 'react-toastify';
 import { getError } from '../utils';
@@ -59,13 +59,14 @@ export default function SignupScreen() {
           <Form.Label>Name</Form.Label>
           <Form.Control onChange={(e) => setName(e.target.value)} required />
         </Form.Group>
+
         <Form.Group className="mb-3" controlId="email">
           <Form.Label>Email</Form.Label>
           <Form.Control
             type="email"
             required
             onChange={(e) => setEmail(e.target.value)}
-          ></Form.Control>
+          />
         </Form.Group>
         <Form.Group className="mb-3" controlId="password">
           <Form.Label>Password</Form.Label>
@@ -73,22 +74,22 @@ export default function SignupScreen() {
             type="password"
             required
             onChange={(e) => setPassword(e.target.value)}
-          ></Form.Control>
-        </Form.Group>
-        <Form.Group className="mb-3" controlId="confirmPassword">
-          <Form.Label>Confirm Password</Form.Label>
-          <Form.Control
-            type="password"
-            required
-            onChange={(e) => setConfirmPassword(e.target.value)}
-          ></Form.Control>
+          />
+          <Form.Group className="mb-3" controlId="confirmPassword">
+            <Form.Label>Confirm Password</Form.Label>
+            <Form.Control
+              type="password"
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              required
+            />
+          </Form.Group>
         </Form.Group>
         <div className="mb-3">
           <Button type="submit">Sign Up</Button>
         </div>
         <div className="mb-3">
           Already have an account?{' '}
-          <Link to={`/signin?redirect=${redirect}`}>Sign-in</Link>
+          <Link to={`/signin?redirect=${redirect}`}>Sign-In</Link>
         </div>
       </Form>
     </Container>

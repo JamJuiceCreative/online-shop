@@ -1,16 +1,17 @@
-import React, { useReducer, useEffect, useContext } from 'react';
+import axios from 'axios';
+import React, { useContext, useEffect, useReducer } from 'react';
 import { PayPalButtons, usePayPalScriptReducer } from '@paypal/react-paypal-js';
 import { Helmet } from 'react-helmet-async';
-import { useNavigate, useParams, Link } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+import ListGroup from 'react-bootstrap/ListGroup';
+import Card from 'react-bootstrap/Card';
+import { Link } from 'react-router-dom';
 import LoadingBox from '../components/LoadingBox';
 import MessageBox from '../components/MessageBox';
 import { Store } from '../Store';
 import { getError } from '../utils';
-import axios from 'axios';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
-import Card from 'react-bootstrap/Card';
-import ListGroup from 'react-bootstrap/ListGroup';
 import { toast } from 'react-toastify';
 
 function reducer(state, action) {
@@ -93,7 +94,7 @@ export default function OrderScreen() {
   useEffect(() => {
     const fetchOrder = async () => {
       try {
-        dispatch({ type: 'FETCH_REQUEST ' });
+        dispatch({ type: 'FETCH_REQUEST' });
         const { data } = await axios.get(`/api/orders/${orderId}`, {
           headers: { authorization: `Bearer ${userInfo.token}` },
         });
@@ -102,13 +103,14 @@ export default function OrderScreen() {
         dispatch({ type: 'FETCH_FAIL', payload: getError(err) });
       }
     };
+
     if (!userInfo) {
-      return navigate('./login');
+      return navigate('/login');
     }
     if (!order._id || successPay || (order._id && order._id !== orderId)) {
       fetchOrder();
       if (successPay) {
-        dispatch({ type: 'PAY_RESET ' });
+        dispatch({ type: 'PAY_RESET' });
       }
     } else {
       const loadPaypalScript = async () => {
@@ -116,10 +118,10 @@ export default function OrderScreen() {
           headers: { authorization: `Bearer ${userInfo.token}` },
         });
         paypalDispatch({
-          type: `resetOptions`,
+          type: 'resetOptions',
           value: {
             'client-id': clientId,
-            currency: 'AUD',
+            currency: 'USD',
           },
         });
         paypalDispatch({ type: 'setLoadingStatus', value: 'pending' });
@@ -136,7 +138,7 @@ export default function OrderScreen() {
       <Helmet>
         <title>Order {orderId}</title>
       </Helmet>
-      <h1 className="my-3">Order {orderId} </h1>
+      <h1 className="my-3">Order {orderId}</h1>
       <Row>
         <Col md={8}>
           <Card className="mb-3">
@@ -144,7 +146,7 @@ export default function OrderScreen() {
               <Card.Title>Shipping</Card.Title>
               <Card.Text>
                 <strong>Name:</strong> {order.shippingAddress.fullName} <br />
-                <strong>Address:</strong> {order.shippingAddress.address},
+                <strong>Address: </strong> {order.shippingAddress.address},
                 {order.shippingAddress.city}, {order.shippingAddress.postalCode}
                 ,{order.shippingAddress.country}
               </Card.Text>
@@ -172,9 +174,10 @@ export default function OrderScreen() {
               )}
             </Card.Body>
           </Card>
+
           <Card className="mb-3">
             <Card.Body>
-              <Card.Title> Items</Card.Title>
+              <Card.Title>Items</Card.Title>
               <ListGroup variant="flush">
                 {order.orderItems.map((item) => (
                   <ListGroup.Item key={item._id}>
@@ -190,7 +193,7 @@ export default function OrderScreen() {
                       <Col md={3}>
                         <span>{item.quantity}</span>
                       </Col>
-                      <Col md={3}>{item.price}</Col>
+                      <Col md={3}>${item.price}</Col>
                     </Row>
                   </ListGroup.Item>
                 ))}
@@ -223,8 +226,12 @@ export default function OrderScreen() {
                 </ListGroup.Item>
                 <ListGroup.Item>
                   <Row>
-                    <Col>Order Total</Col>
-                    <Col>${order.totalPrice.toFixed(2)}</Col>
+                    <Col>
+                      <strong> Order Total</strong>
+                    </Col>
+                    <Col>
+                      <strong>${order.totalPrice.toFixed(2)}</strong>
+                    </Col>
                   </Row>
                 </ListGroup.Item>
                 {!order.isPaid && (

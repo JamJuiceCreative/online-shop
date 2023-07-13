@@ -31,9 +31,11 @@ export default function CartScreen() {
   const removeItemHandler = (item) => {
     ctxDispatch({ type: 'CART_REMOVE_ITEM', payload: item });
   };
+
   const checkoutHandler = () => {
     navigate('/signin?redirect=/shipping');
   };
+
   return (
     <div>
       <Helmet>
@@ -57,7 +59,7 @@ export default function CartScreen() {
                         alt={item.name}
                         className="img-fluid rounded img-thumbnail"
                       ></img>{' '}
-                      <Link to={`/products/${item.slug}`}>{item.name}</Link>
+                      <Link to={`/product/${item.slug}`}>{item.name}</Link>
                     </Col>
                     <Col md={3}>
                       <Button
@@ -78,7 +80,7 @@ export default function CartScreen() {
                         disabled={item.quantity === item.countInStock}
                       >
                         <i className="fas fa-plus-circle"></i>
-                      </Button>{' '}
+                      </Button>
                     </Col>
                     <Col md={3}>${item.price}</Col>
                     <Col md={2}>

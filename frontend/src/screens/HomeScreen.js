@@ -1,5 +1,4 @@
-import { useEffect, useReducer } from 'react';
-// import { Link } from 'react-router-dom';
+import { useEffect, useReducer, useState } from 'react';
 import axios from 'axios';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
@@ -28,7 +27,7 @@ function HomeScreen() {
     loading: true,
     error: '',
   });
-  //    const [products, setProducts] = useState([]);
+  // const [products, setProducts] = useState([]);
   useEffect(() => {
     const fetchData = async () => {
       dispatch({ type: 'FETCH_REQUEST' });
@@ -39,14 +38,14 @@ function HomeScreen() {
         dispatch({ type: 'FETCH_FAIL', payload: err.message });
       }
 
-      //   setProducts(result.data);
+      // setProducts(result.data);
     };
     fetchData();
   }, []);
   return (
     <div>
       <Helmet>
-        <title>online-shop</title>
+        <title>Amazona</title>
       </Helmet>
       <h1>Featured Products</h1>
       <div className="products">
@@ -57,7 +56,7 @@ function HomeScreen() {
         ) : (
           <Row>
             {products.map((product) => (
-              <Col  key={product.slug} sm={6} md={4} lg={3} className="mb-3">
+              <Col key={product.slug} sm={6} md={4} lg={3} className="mb-3">
                 <Product product={product}></Product>
               </Col>
             ))}

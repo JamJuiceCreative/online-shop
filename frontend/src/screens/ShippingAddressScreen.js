@@ -1,10 +1,10 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import { useNavigate } from 'react-router-dom';
 import { Store } from '../Store';
-import CheckOutSteps from '../components/CheckOutSteps';
+import CheckoutSteps from '../components/CheckoutSteps';
 
 export default function ShippingAddressScreen() {
   const navigate = useNavigate();
@@ -54,7 +54,8 @@ export default function ShippingAddressScreen() {
       <Helmet>
         <title>Shipping Address</title>
       </Helmet>
-      <CheckOutSteps step1 step2></CheckOutSteps>
+
+      <CheckoutSteps step1 step2></CheckoutSteps>
       <div className="container small-container">
         <h1 className="my-3">Shipping Address</h1>
         <Form onSubmit={submitHandler}>
